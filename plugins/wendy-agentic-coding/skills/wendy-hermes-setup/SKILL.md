@@ -52,24 +52,23 @@ Connection test (launches the server over stdio and lists tools):
 hermes mcp test wendy
 ```
 
-Following registration, start a new Hermes session so the tool list is picked up. Inside a session, `wendy_status` reports connection state in plain English and `device_list` enumerates devices; both are safe read-only checks before running any device operation through `wendy-device-ops`.
+Following registration, start a new Hermes session so the tool list is picked up. Inside a session, `wendy_status` reports connection state in plain English and `device_list` enumerates devices; both are safe read-only checks before running any device operation through [wendy-device-ops].
 
 If `hermes mcp test wendy` fails, isolate the layer: run `wendy --version` (CLI missing or stale?), then `wendy discover --json` (device reachable?). The MCP server only proxies to a connected device; it cannot make an offline device reachable.
 
 ## Skills
 
-`wendy mcp setup` writes a generated skills digest (named `wendy-skills.md`) for Codex and OpenCode, but Hermes discovers skills from per-directory `SKILL.md` files instead, searching `~/.hermes/skills/` (shared across all profiles) and `~/.hermes/profiles/<profile>/skills/` (per profile). This repository's skills (for example `wendy-app-lifecycle`, `wendy-device-ops`, `wendy-entitlements`) are already in that layout, so to make them discoverable inside a Hermes profile, run from the repository root (or use `git rev-parse --show-toplevel`), then symlink or copy each skill directory into the profile's skills folder:
+`wendy mcp setup` writes a generated skills digest (named `wendy-skills.md`) for Codex and OpenCode, but Hermes discovers skills from per-directory `SKILL.md` files instead, searching `~/.hermes/skills/` (shared across all profiles) and `~/.hermes/profiles/<profile>/skills/` (per profile). This repository's skills (for example `wendy-app-lifecycle`, `wendy-device-ops`, `wendy-entitlements`) are already in that layout, so to make them discoverable to Hermes, run from the repository root and link all of them at once. Installing into `~/.hermes/skills/` makes them visible to every profile (a per-profile install uses `~/.hermes/profiles/<profile>/skills/` instead):
 
 ```bash
 REPO_TOP=$(git rev-parse --show-toplevel)
-mkdir -p ~/.hermes/profiles/<profile>/skills
-ln -sfn "$REPO_TOP/plugins/wendy-agentic-coding/skills/wendy-device-ops" \
-  ~/.hermes/profiles/<profile>/skills/wendy-device-ops
+mkdir -p ~/.hermes/skills
+for dir in "$REPO_TOP"/plugins/wendy-agentic-coding/skills/*/; do
+  ln -sfn "$dir" ~/.hermes/skills/"$(basename "$dir")"
+done
 ```
 
-A skill placed in `~/.hermes/skills/` instead is visible to every profile, so a global install avoids repeating the symlink per profile.
-
-Restart the session after adding skills — Hermes builds the skill index at session start.
+`git rev-parse --show-toplevel` keeps the loop working from any subdirectory of the repository. Restart the session after adding skills — Hermes builds the skill index at session start.
 
 ## Safety
 

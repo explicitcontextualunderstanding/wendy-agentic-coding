@@ -65,4 +65,4 @@ If `wendy discover --json` finds no device, do not treat that as a failed CLI in
 
 ## Agent host note
 
-If the assistant host is Hermes Agent, the CLI is installed the same way as above, but `wendy mcp setup` does not configure Hermes as a target. Register the Wendy MCP server manually with `hermes mcp add` — see `wendy-hermes-setup` for the registration, verification, and skills steps.
+If the assistant host is Hermes Agent, the CLI is installed the same way as above, but `wendy mcp setup` does not configure Hermes as a target. Register the Wendy MCP server manually with `hermes mcp add` — see [wendy-hermes-setup] for the registration, verification, and skills steps.
