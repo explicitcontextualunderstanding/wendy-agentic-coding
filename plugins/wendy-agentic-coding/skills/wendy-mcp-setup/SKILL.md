@@ -1,6 +1,6 @@
 ---
 name: wendy-mcp-setup
-description: Use when configuring, verifying, or explaining the Wendy CLI MCP server for AI assistants with `wendy mcp setup` or `wendy mcp serve`, especially Claude Code, Claude Desktop, Codex, or device-tool access.
+description: Use when configuring, verifying, or explaining the Wendy CLI MCP server for AI assistants with `wendy mcp setup` or `wendy mcp serve`, especially Claude Code, Claude Desktop, Codex, Hermes Agent, or device-tool access.
 ---
 
 # Wendy MCP Setup Workflow
@@ -31,7 +31,9 @@ Run this only when the user wants Wendy MCP written into local AI tool configura
 wendy mcp setup
 ```
 
-Current setup behavior configures Claude Code and Claude Desktop when detected. It writes a stdio MCP server entry that runs the installed `wendy` binary with:
+Current setup behavior configures Claude Code and Claude Desktop when detected. It also installs a generated skills digest for Codex and OpenCode. Hermes Agent is not a `wendy mcp setup` target — register the server manually with `hermes mcp add` per `wendy-hermes-setup`.
+
+It writes a stdio MCP server entry that runs the installed `wendy` binary with:
 
 ```bash
 wendy mcp serve
@@ -50,7 +52,7 @@ wendy mcp serve --device <hostname>
 
 `--device` can also be written as `-d`. If omitted, the server attempts to use the configured default device.
 
-For Codex or any MCP host not covered by `wendy mcp setup`, configure a stdio server named `wendy` with command `wendy` and args `["mcp", "serve"]`. Add `--device <hostname>` only when the user wants that MCP server pinned to one device.
+For Codex or any MCP host not covered by `wendy mcp setup`, configure a stdio server named `wendy` with command `wendy` and args `["mcp", "serve"]`. Add `--device <hostname>` only when the user wants that MCP server pinned to one device. For Hermes Agent specifically, use the ready-made registration steps in `wendy-hermes-setup`.
 
 ## Verification
 

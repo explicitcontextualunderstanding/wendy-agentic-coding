@@ -62,3 +62,7 @@ If the user is working from source inside `/Users/maximilianalexander/wendylabsi
 ## Common follow-up
 
 If `wendy discover --json` finds no device, do not treat that as a failed CLI install. Separate CLI installation from device reachability, then move to `wendy-device-debug` if the task is about a missing or unreachable device.
+
+## Agent host note
+
+If the assistant host is Hermes Agent, the CLI is installed the same way as above, but `wendy mcp setup` does not configure Hermes as a target. Register the Wendy MCP server manually with `hermes mcp add` — see `wendy-hermes-setup` for the registration, verification, and skills steps.
