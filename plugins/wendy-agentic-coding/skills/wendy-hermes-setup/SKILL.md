@@ -58,13 +58,16 @@ If `hermes mcp test wendy` fails, isolate the layer: run `wendy --version` (CLI 
 
 ## Skills
 
-`wendy mcp setup` writes a generated skills digest (named `wendy-skills.md`) for Codex and OpenCode, but Hermes discovers skills from per-directory `SKILL.md` files instead. This repository's skills (for example `wendy-app-lifecycle`, `wendy-device-ops`, `wendy-entitlements`) are already in that layout, so to make them discoverable inside a Hermes profile, symlink or copy each skill directory into the profile's skills folder:
+`wendy mcp setup` writes a generated skills digest (named `wendy-skills.md`) for Codex and OpenCode, but Hermes discovers skills from per-directory `SKILL.md` files instead, searching `~/.hermes/skills/` (shared across all profiles) and `~/.hermes/profiles/<profile>/skills/` (per profile). This repository's skills (for example `wendy-app-lifecycle`, `wendy-device-ops`, `wendy-entitlements`) are already in that layout, so to make them discoverable inside a Hermes profile, run from the repository root (or use `git rev-parse --show-toplevel`), then symlink or copy each skill directory into the profile's skills folder:
 
 ```bash
+REPO_TOP=$(git rev-parse --show-toplevel)
 mkdir -p ~/.hermes/profiles/<profile>/skills
-ln -sfn "$PWD/plugins/wendy-agentic-coding/skills/wendy-device-ops" \
+ln -sfn "$REPO_TOP/plugins/wendy-agentic-coding/skills/wendy-device-ops" \
   ~/.hermes/profiles/<profile>/skills/wendy-device-ops
 ```
+
+A skill placed in `~/.hermes/skills/` instead is visible to every profile, so a global install avoids repeating the symlink per profile.
 
 Restart the session after adding skills — Hermes builds the skill index at session start.
 
